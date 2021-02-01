@@ -11,4 +11,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 for build mode
 
-## Inspiration from [Dribble](https://dribbble.com/shots/14898415-Page-Transition-Concept)
+
