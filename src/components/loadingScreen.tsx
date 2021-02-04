@@ -2,7 +2,7 @@ import { Box, Spinner, Center } from "@chakra-ui/react";
 import colors from "../styles/colors";
 export default function LoadingScreen() {
   return (
-    <Box bgColor={colors.grey} h="100vh">
+    <Box bgColor={colors.jet} h="100vh">
       <Center>
         <Spinner
           color={colors.pink}

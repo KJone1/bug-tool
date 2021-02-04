@@ -9,6 +9,7 @@ require("dotenv").config();
 server.use(cors());
 
 server.use(express.json());
+
 ///////////////
 const PORT = process.env.PORT || 8080;
 const uri = process.env.ATLAS_URI;
