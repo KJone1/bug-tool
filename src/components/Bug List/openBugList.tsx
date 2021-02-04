@@ -1,24 +1,29 @@
-import React, { useState } from "react";
 import {
   Badge,
   Flex,
   SimpleGrid,
   Stack,
   Text,
-  Checkbox,
   Tag,
   TagLabel,
-  Box,
 } from "@chakra-ui/react";
 import http from "../../axios";
 import LoadingScreen from "../loadingScreen";
 import CompleteButton from "../buttons/completeButton";
 import day from "dayjs";
-import axios from "axios";
+
 import DeleteButton from "../buttons/deleteButton";
 
-function BugList() {
-  const httpCall = http(false);
+import colors from "../../styles/colors";
+
+interface PropType {
+  type: string;
+  IsCompleted?: Boolean;
+  VerNum?: Number;
+}
+
+function BugList(props: PropType) {
+  const httpCall = http(props.type, props.IsCompleted, props.VerNum);
 
   if (httpCall.length !== 0) {
     return (
@@ -36,17 +41,25 @@ function BugList() {
               w="50vw"
               h="12vh"
               color="black"
-              backgroundColor="white"
+              backgroundColor={colors.white}
               borderRadius="5px"
               pl={4}
               justifyContent="space-between"
               alignItems="center"
+              mx={1}
             >
               <Flex flexDirection="column">
                 <Stack direction="row" display="flex">
-                  <Text fontSize="2.5vh" fontWeight="700">
-                    {`${array.BugName}`}
-                  </Text>
+                  {array.IsComplete ? (
+                    <Text fontSize="2.5vh" fontWeight="700" as="del">
+                      {`${array.BugName}`}
+                    </Text>
+                  ) : (
+                    <Text fontSize="2.5vh" fontWeight="700">
+                      {`${array.BugName}`}
+                    </Text>
+                  )}
+
                   <Tag
                     size="sm"
                     variant="outline"
@@ -60,7 +73,7 @@ function BugList() {
                   </Tag>
                 </Stack>
 
-                <Text color="gray.500" fontSize="2vh" fontWeight="500">
+                <Text color={colors.coralBlack} fontSize="2vh" fontWeight="500">
                   {`${array.BugDescription ? `${array.BugDescription}` : "—"}`}
                 </Text>
 
@@ -87,17 +100,24 @@ function BugList() {
                   </Flex>
                 </Stack>
               </Flex>
-              <Stack flexDir="column" mr={6} spacing={"0.5vh"}>
-                <CompleteButton
-                  id={array._id}
-                  BugName={array.BugName}
-                  BugDescription={array.BugDescription}
-                  Version={array.Version}
-                  IsRepeatable={array.IsRepeatable}
-                  Submitter={array.Submitter}
-                />
-                <DeleteButton id={array._id} />
-              </Stack>
+
+              {array.IsComplete ? (
+                <Flex flexDir="column" mr={6}>
+                  <DeleteButton id={array._id} />
+                </Flex>
+              ) : (
+                <Stack flexDir="column" mr={6} spacing={"0.5vh"}>
+                  <CompleteButton
+                    id={array._id}
+                    BugName={array.BugName}
+                    BugDescription={array.BugDescription}
+                    Version={array.Version}
+                    IsRepeatable={array.IsRepeatable}
+                    Submitter={array.Submitter}
+                  />
+                  <DeleteButton id={array._id} />
+                </Stack>
+              )}
             </Flex>
           ))}
         </SimpleGrid>

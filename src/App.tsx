@@ -1,8 +1,7 @@
 import React from "react";
 import { Flex, Heading, Stack } from "@chakra-ui/react";
 import BugList from "./components/Bug List/openBugList";
-import BugForm from "./components/bugform";
-import ClosedBugs from "./components/Bug List/closedBugList";
+
 import SortButton from "./components/buttons/sortButton";
 import {
   BrowserRouter as Router,
@@ -12,18 +11,23 @@ import {
 } from "react-router-dom";
 import LoadingScreen from "./components/loadingScreen";
 import NewBugButton from "./components/buttons/addBugButton";
-
-// import BugForm from "./components/bugform";
-
+import colors from "./styles/colors";
+import "./styles/fonts.css";
 function App() {
   return (
     <Flex
-      backgroundColor="#282c34"
+      backgroundColor={colors.jet}
       h="100vh"
       alignItems="center"
       flexDirection="column"
+      fontFamily="Arimo"
     >
-      <Heading color="white" my={10}>
+      <Heading
+        color={colors.yellow}
+        my={10}
+        fontFamily="Arimo"
+        letterSpacing="1px"
+      >
         bug tool
       </Heading>
       <Router>
@@ -33,8 +37,22 @@ function App() {
         </Stack>
 
         <Switch>
-          <Route exact path={`/`} component={BugList} />
-          <Route path={`/bugs/closed`} component={ClosedBugs} />
+          <Route exact path={`/`}>
+            <BugList type="all" />
+          </Route>
+          <Route exact path={`/bugs/status/open`}>
+            <BugList type="status" IsCompleted={false} />
+          </Route>
+          <Route exact path={`/bugs/status/closed`}>
+            <BugList type="status" IsCompleted />
+          </Route>
+          <Route exact path={`/bugs/version/0.1`}>
+            <BugList type="version" VerNum={0.1} />
+          </Route>
+
+          <Route exact path={`/bugs/version/0.2`}>
+            <BugList type="version" VerNum={0.2} />
+          </Route>
 
           <Route exact path="/error" component={LoadingScreen} />
           <Route>

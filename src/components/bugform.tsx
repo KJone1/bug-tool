@@ -66,6 +66,7 @@ const BugForm = () => {
       flexDirection="column"
       alignItems="center"
       color="white"
+      fontFamily="Arimo"
     >
       <FormControl id="name" isRequired>
         <FormLabel>Bug Name</FormLabel>
@@ -93,6 +94,9 @@ const BugForm = () => {
           <option style={{ color: "black" }}>Select Version</option>
           <option style={{ color: "black" }} value={0.1}>
             0.1
+          </option>
+          <option style={{ color: "black" }} value={0.2}>
+            0.2
           </option>
         </Select>
       </FormControl>
@@ -140,8 +144,9 @@ const BugForm = () => {
         isLoading={isSubmitting}
         mt={12}
         mb={4}
-        colorScheme="teal"
+        colorScheme="green"
         type="submit"
+        letterSpacing="1px"
         onClick={NewDBEntry}
       >
         Submit

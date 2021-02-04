@@ -1,4 +1,16 @@
 export default {
   pink: "#ff165d",
   grey: "#282c34",
+  yellow: "#E8C547",
+  jet: "#30323D",
+  independence: "#4D5061",
+  blue: "#5C80BC",
+  wolf: "#CDD1C4",
+  pistachio: "#8ACB88",
+  coralBlack: "#4F6272",
+  peach: "#F4C095",
+  darkpurple: "#22031F",
+  dirtywhite: "#EFF6EE",
+  white: "#FFFCFF",
+  black: "#300",
 };

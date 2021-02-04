@@ -63,5 +63,10 @@ router.route("/completed/:IsComplete").get((req, res) => {
     .then((Bug) => res.json(Bug))
     .catch((err) => res.status(400).json("Error: " + err));
 });
+router.route("/version/:Version").get((req, res) => {
+  Bug.find({ Version: req.params.Version })
+    .then((Bug) => res.json(Bug))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
 
 module.exports = router;

@@ -19,22 +19,28 @@ function SortButton() {
         m={4}
         rightIcon={<BiChevronDown style={{ transform: "scale(1.3)" }} />}
       >
-        Sort
+        Filter
       </MenuButton>
       <MenuList minWidth="240px">
         <MenuGroup title="Status">
-          <NavLink to="/">
+          <NavLink exact to="/bugs/status/open">
             <MenuItem value="Open Bugs">Open Bugs</MenuItem>
           </NavLink>
-          <NavLink to="/bugs/closed">
+          <NavLink exact to="/bugs/status/closed">
             <MenuItem value="Closed Bugs">Closed Bugs</MenuItem>
+          </NavLink>
+          <NavLink to="/">
+            <MenuItem value="All Bugs">All Bugs</MenuItem>
           </NavLink>
         </MenuGroup>
         <MenuDivider />
-        <MenuGroup title="Submitter" type="checkbox">
-          <MenuItem value="Guy">Guy</MenuItem>
-          <MenuItem value="Dana">Dana</MenuItem>
-          <MenuItem value="Yuval">Yuval</MenuItem>
+        <MenuGroup title="Version">
+          <NavLink to="/bugs/version/0.1">
+            <MenuItem value={0.1}>0.1</MenuItem>
+          </NavLink>
+          <NavLink to="/bugs/version/0.2">
+            <MenuItem value={0.2}>0.2</MenuItem>
+          </NavLink>
         </MenuGroup>
       </MenuList>
     </Menu>
