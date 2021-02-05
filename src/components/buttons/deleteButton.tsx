@@ -11,7 +11,7 @@ function DeleteButton(props: any) {
   function DeleteDBEntry(id: any) {
     SetDelete(true);
     axios
-      .delete(`http://localhost:8080/bugs/${id}`)
+      .delete(`https://kj-api.herokuapp.com/bugs/${id}`)
       .then(() => console.log(":deleted"))
       .then(() =>
         toast({
@@ -37,8 +37,8 @@ function DeleteButton(props: any) {
 
   return (
     <IconButton
-      h={"4vh"}
-      w={"4vh"}
+      h={"100%"}
+      w={"40%"}
       colorScheme="red"
       aria-label="delete Button"
       isLoading={isDeleting}

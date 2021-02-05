@@ -27,7 +27,7 @@ function CompleteButton(props: any) {
     };
 
     axios
-      .post(`http://localhost:8080/bugs/complete/${id}`, newBug)
+      .post(`https://kj-api.herokuapp.com/bugs/complete/${id}`, newBug)
       .then((_) => console.log(":completed"))
       .then(() =>
         toast({
