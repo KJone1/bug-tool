@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 
-const BASE_URL = "http://localhost:8080/bugs/";
+const BASE_URL = "https://kj-api.herokuapp.com/bugs/";
 
 export default function Http(
   type: String,
