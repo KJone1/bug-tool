@@ -57,7 +57,7 @@ function CompleteButton(props: any) {
       colorScheme="green"
       aria-label="Complete Button"
       isLoading={isCompleting}
-      fontSize="3vh"
+      fontSize="2vw"
       icon={<BiCheck />}
       onClick={() => {
         IsCompeted(

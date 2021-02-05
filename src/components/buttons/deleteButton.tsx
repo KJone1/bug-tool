@@ -37,8 +37,8 @@ function DeleteButton(props: any) {
 
   return (
     <IconButton
-      h={"100%"}
-      w={"40%"}
+      h={"4vh"}
+      w={"3vw"}
       colorScheme="red"
       aria-label="delete Button"
       isLoading={isDeleting}
