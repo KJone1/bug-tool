@@ -13,6 +13,7 @@ import LoadingScreen from "./components/loadingScreen";
 import NewBugButton from "./components/buttons/addBugButton";
 import colors from "./styles/colors";
 import "./styles/fonts.css";
+
 function App() {
   return (
     <Flex
@@ -30,6 +31,7 @@ function App() {
       >
         bug tool
       </Heading>
+
       <Router>
         <Stack direction="row">
           <NewBugButton />

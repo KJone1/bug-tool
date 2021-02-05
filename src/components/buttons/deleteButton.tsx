@@ -1,7 +1,7 @@
 import React from "react";
 import { IconButton, useToast } from "@chakra-ui/react";
 import { BiTrash } from "react-icons/bi";
-import { NavLink } from "react-router-dom";
+
 import axios from "axios";
 
 function DeleteButton(props: any) {

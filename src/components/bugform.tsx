@@ -3,7 +3,6 @@ import { useState } from "react";
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
   Input,
   HStack,
   Flex,
@@ -12,7 +11,6 @@ import {
   Select,
   Button,
   useToast,
-  Stack,
 } from "@chakra-ui/react";
 
 const BugForm = () => {

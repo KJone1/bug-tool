@@ -9,13 +9,13 @@ export default function Http(
   version?: Number
 ) {
   const [responseData, setResponseData] = React.useState<any>([]);
-  const [refresh, SetRefresh] = React.useState<any>(0);
+  const [refresh, SetRefresh] = React.useState<number>(0);
 
   React.useEffect(() => {
     let ref = setTimeout(function () {
       SetRefresh(refresh + 1);
       console.log(refresh);
-    }, 8000);
+    }, 10000);
 
     switch (type.toLowerCase()) {
       case "status":
