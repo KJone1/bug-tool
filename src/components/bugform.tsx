@@ -34,7 +34,7 @@ const BugForm = () => {
     };
     SetSubmit(true);
     axios
-      .post("http://localhost:8080/bugs/add", newBug)
+      .post("https://kj-api.herokuapp.com/bugs/add", newBug)
       .then((_) => console.log(":posted"))
       .then((_) =>
         toast({
