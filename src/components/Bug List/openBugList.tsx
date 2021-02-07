@@ -89,12 +89,23 @@ function BugList(props: PropType) {
                   </Tag>
                 </Stack>
 
-                <Text color={colors.coralBlack} fontSize="2vh" fontWeight="500">
-                  {`${array.BugDescription ? `${array.BugDescription}` : "—"}`}
+                <Text
+                  color={colors.coralBlack}
+                  fontSize={{ base: "1.7vh", md: "1.9vh", lg: "2.0vh" }}
+                  fontWeight="500"
+                >
+                  {`${
+                    array.BugDescription ? `${array.BugDescription}` : "None"
+                  }`}
                 </Text>
 
                 <Flex flexDirection="row">
-                  <Text color="gray.400" fontSize="1.8vh" fontWeight="500">
+                  <Text
+                    color="gray.400"
+                    fontSize={{ base: "1.7vh", md: "1.9vh", lg: "2.0vh" }}
+                    fontWeight="500"
+                    alignSelf="center"
+                  >
                     {`Submitted by: ${array.Submitter} on ${day(
                       array.createdAt
                     ).format("DD/MM/YYYY")}`}
