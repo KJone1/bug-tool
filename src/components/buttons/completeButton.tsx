@@ -1,6 +1,6 @@
 import React from "react";
 import { IconButton, useToast } from "@chakra-ui/react";
-import { BiCheck } from "react-icons/bi";
+import { FiCheck } from "react-icons/fi";
 
 import axios from "axios";
 
@@ -55,10 +55,11 @@ function CompleteButton(props: any) {
   return (
     <IconButton
       colorScheme="green"
+      variant="ghost"
       aria-label="Complete Button"
       isLoading={isCompleting}
-      fontSize="2vw"
-      icon={<BiCheck />}
+      fontSize="200%"
+      icon={<FiCheck />}
       onClick={() => {
         IsCompeted(
           props.id,

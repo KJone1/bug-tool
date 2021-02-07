@@ -1,6 +1,6 @@
 import React from "react";
 import { IconButton, useToast } from "@chakra-ui/react";
-import { BiTrash } from "react-icons/bi";
+import { FiTrash2 } from "react-icons/fi";
 
 import axios from "axios";
 
@@ -39,11 +39,12 @@ function DeleteButton(props: any) {
     <IconButton
       h={"4vh"}
       w={"3vw"}
+      variant="ghost"
       colorScheme="red"
       aria-label="delete Button"
       isLoading={isDeleting}
-      fontSize="2.5vh"
-      icon={<BiTrash />}
+      fontSize="130%"
+      icon={<FiTrash2 />}
       onClick={() => DeleteDBEntry(props.id)}
     />
   );
