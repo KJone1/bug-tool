@@ -6,6 +6,7 @@ import {
   Text,
   Tag,
   TagLabel,
+  Icon,
 } from "@chakra-ui/react";
 import http from "../../axios";
 import LoadingScreen from "../loadingScreen";
@@ -15,6 +16,7 @@ import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
 import DeleteButton from "../buttons/deleteButton";
 import colors from "../../styles/colors";
+import { FiRepeat } from "react-icons/fi";
 
 interface PropType {
   type: string;
@@ -42,7 +44,7 @@ function BugList(props: PropType) {
           overflowY="scroll"
           mb={"9vh"}
           mt={4}
-          w={{ base: "90%", md: "70%", lg: "50%" }}
+          w={{ base: "95%", md: "70%", lg: "50%" }}
           justifyContent="center"
         >
           {httpCall.map((array: any, index: number) => (
@@ -53,15 +55,16 @@ function BugList(props: PropType) {
               color="black"
               backgroundColor={colors.white}
               borderRadius="5px"
-              p={4}
+              px={4}
+              py={2}
               justifyContent="space-between"
-              alignItems="center"
+              alignItems="flex-end"
             >
               <Flex flexDirection="column">
-                <Stack direction="row" display="flex">
+                <Stack direction="row">
                   {array.IsComplete ? (
                     <Text
-                      fontSize={{ base: "2vh", md: "2.5vh", lg: "3vh" }}
+                      fontSize={{ base: "2.4vh", md: "2.5vh", lg: "3vh" }}
                       fontWeight="700"
                       as="del"
                     >
@@ -69,7 +72,7 @@ function BugList(props: PropType) {
                     </Text>
                   ) : (
                     <Text
-                      fontSize={{ base: "2.2vh", md: "2.5vh", lg: "3vh" }}
+                      fontSize={{ base: "2.4vh", md: "2.5vh", lg: "3vh" }}
                       fontWeight="700"
                     >
                       {`${array.BugName}`}
@@ -91,7 +94,7 @@ function BugList(props: PropType) {
 
                 <Text
                   color={colors.coralBlack}
-                  fontSize={{ base: "1.7vh", md: "1.9vh", lg: "2.0vh" }}
+                  fontSize="2.0vh"
                   fontWeight="500"
                 >
                   {`${
@@ -99,10 +102,10 @@ function BugList(props: PropType) {
                   }`}
                 </Text>
 
-                <Flex flexDirection="row">
+                <Flex flexDirection="row" alignSelf="flex-start">
                   <Text
                     color="gray.400"
-                    fontSize={{ base: "1.7vh", md: "1.9vh", lg: "2.0vh" }}
+                    fontSize="2.0vh"
                     fontWeight="500"
                     alignSelf="center"
                   >
@@ -112,20 +115,24 @@ function BugList(props: PropType) {
                   </Text>
                   <Badge
                     alignSelf="center"
+                    h="100%"
+                    p={1}
                     ml="4px"
-                    colorScheme={`${array.IsRepeatable ? "red" : "green"}`}
+                    borderRadius="5px"
+                    colorScheme={`${array.IsRepeatable ? "red" : null}`}
                   >
-                    {`${array.IsRepeatable ? "Repeatable" : "Not Repeatable"}`}
+                    {array.IsRepeatable ? <FiRepeat /> : null}
                   </Badge>
                 </Flex>
               </Flex>
 
               {array.IsComplete ? (
-                <Flex flexDir="column">
+                <Flex flexDir="column" alignSelf="center">
                   <DeleteButton id={array._id} />
                 </Flex>
               ) : (
-                <Stack flexDir="column" spacing={"0.8vh"}>
+                <Stack flexDir="row" spacing={"0.8vh"} alignSelf="center">
+                  <DeleteButton id={array._id} />
                   <CompleteButton
                     id={array._id}
                     BugName={array.BugName}
@@ -134,7 +141,6 @@ function BugList(props: PropType) {
                     IsRepeatable={array.IsRepeatable}
                     Submitter={array.Submitter}
                   />
-                  <DeleteButton id={array._id} />
                 </Stack>
               )}
             </Flex>
