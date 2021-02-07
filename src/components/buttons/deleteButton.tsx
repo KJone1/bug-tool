@@ -37,8 +37,7 @@ function DeleteButton(props: any) {
 
   return (
     <IconButton
-      h={"4vh"}
-      w={"3vw"}
+      alignSelf="center"
       variant="ghost"
       colorScheme="red"
       aria-label="delete Button"
