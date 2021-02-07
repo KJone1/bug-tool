@@ -9,7 +9,7 @@ export default function LoadingScreen() {
           size="xl"
           thickness="4px"
           speed="0.65s"
-          mt="50vh"
+          mt="50%"
         />
       </Center>
     </Box>
