@@ -11,9 +11,9 @@ import http from "../../axios";
 import LoadingScreen from "../loadingScreen";
 import CompleteButton from "../buttons/completeButton";
 import day from "dayjs";
-
+import { extendTheme } from "@chakra-ui/react";
+import { createBreakpoints } from "@chakra-ui/theme-tools";
 import DeleteButton from "../buttons/deleteButton";
-
 import colors from "../../styles/colors";
 
 interface PropType {
@@ -21,6 +21,14 @@ interface PropType {
   IsCompleted?: Boolean;
   VerNum?: Number;
 }
+const breakpoints = createBreakpoints({
+  sm: "320px",
+  md: "768px",
+  lg: "960px",
+  xl: "1200px",
+});
+// 3. Extend the theme
+const theme = extendTheme({ breakpoints });
 
 function BugList(props: PropType) {
   const httpCall = http(props.type, props.IsCompleted, props.VerNum);
@@ -34,28 +42,36 @@ function BugList(props: PropType) {
           overflowY="scroll"
           mb={"9vh"}
           mt={4}
+          w={{ base: "90%", md: "70%", lg: "50%" }}
+          justifyContent="center"
         >
           {httpCall.map((array: any, index: number) => (
             <Flex
               key={index}
-              w="50vw"
-              h="12vh"
+              maxW="99%"
+              h="100%"
               color="black"
               backgroundColor={colors.white}
               borderRadius="5px"
-              pl={4}
+              p={4}
               justifyContent="space-between"
               alignItems="center"
-              mx={1}
             >
               <Flex flexDirection="column">
                 <Stack direction="row" display="flex">
                   {array.IsComplete ? (
-                    <Text fontSize="2.5vh" fontWeight="700" as="del">
+                    <Text
+                      fontSize={{ base: "2vh", md: "2.5vh", lg: "3vh" }}
+                      fontWeight="700"
+                      as="del"
+                    >
                       {`${array.BugName}`}
                     </Text>
                   ) : (
-                    <Text fontSize="2.5vh" fontWeight="700">
+                    <Text
+                      fontSize={{ base: "2.2vh", md: "2.5vh", lg: "3vh" }}
+                      fontWeight="700"
+                    >
                       {`${array.BugName}`}
                     </Text>
                   )}
@@ -66,7 +82,7 @@ function BugList(props: PropType) {
                     colorScheme="blue"
                     borderRadius="30px"
                     px={4}
-                    h={"1vh"}
+                    h="100%"
                     alignSelf="center"
                   >
                     <TagLabel> {`v${array.Version}`}</TagLabel>
@@ -77,36 +93,28 @@ function BugList(props: PropType) {
                   {`${array.BugDescription ? `${array.BugDescription}` : "—"}`}
                 </Text>
 
-                <Stack
-                  direction="row"
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <Flex flexDirection="row">
-                    <Text color="gray.400" fontSize="1.8vh" fontWeight="500">
-                      {`Submitted by: ${array.Submitter} on ${day(
-                        array.createdAt
-                      ).format("DD/MM/YYYY")}`}
-                    </Text>
-                    <Badge
-                      alignSelf="center"
-                      ml="4px"
-                      colorScheme={`${array.IsRepeatable ? "red" : "green"}`}
-                    >
-                      {`${
-                        array.IsRepeatable ? "Repeatable" : "Not Repeatable"
-                      }`}
-                    </Badge>
-                  </Flex>
-                </Stack>
+                <Flex flexDirection="row">
+                  <Text color="gray.400" fontSize="1.8vh" fontWeight="500">
+                    {`Submitted by: ${array.Submitter} on ${day(
+                      array.createdAt
+                    ).format("DD/MM/YYYY")}`}
+                  </Text>
+                  <Badge
+                    alignSelf="center"
+                    ml="4px"
+                    colorScheme={`${array.IsRepeatable ? "red" : "green"}`}
+                  >
+                    {`${array.IsRepeatable ? "Repeatable" : "Not Repeatable"}`}
+                  </Badge>
+                </Flex>
               </Flex>
 
               {array.IsComplete ? (
-                <Flex flexDir="column" mr={6}>
+                <Flex flexDir="column">
                   <DeleteButton id={array._id} />
                 </Flex>
               ) : (
-                <Stack flexDir="column" mr={6} spacing={"0.5vh"}>
+                <Stack flexDir="column" spacing={"0.8vh"}>
                   <CompleteButton
                     id={array._id}
                     BugName={array.BugName}
