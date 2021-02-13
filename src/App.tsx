@@ -13,9 +13,9 @@ import EmptyScreen from "./components/emptyScreen";
 export default function App() {
   const [versionPath, setVersionPath] = React.useState<any>([]);
   React.useEffect(() => {
-    //! axios.get("https://kj-api.herokuapp.com/bugs/filterByVerParams")
     axios
-      .get("http://localhost:8080/bugs/filterByVerParams")
+      .get("https://kj-api.herokuapp.com/bugs/filterByVerParams")
+      //! axios.get("http://localhost:8080/bugs/filterByVerParams")
       .then((response) => {
         setVersionPath(response.data);
         console.log("got params");

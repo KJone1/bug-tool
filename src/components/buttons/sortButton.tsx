@@ -17,9 +17,9 @@ function SortButton() {
 
   //desc: update Menu only first time website loads
   React.useEffect(() => {
-    //! axios.get("https://kj-api.herokuapp.com/bugs/filterByVerParams")
     axios
-      .get("http://localhost:8080/bugs/filterByVerParams")
+      .get("https://kj-api.herokuapp.com/bugs/filterByVerParams")
+      //! axios.get("http://localhost:8080/bugs/filterByVerParams")
       .then((response) => {
         setAvailableVersion(response.data);
         console.log("got params");
