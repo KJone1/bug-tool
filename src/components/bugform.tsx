@@ -16,25 +16,31 @@ import {
 const BugForm = () => {
   const [bugName, SetBugName] = useState("");
   const [bugDescription, SetBugDesc] = useState("");
-  const [repeatable, SetRepeatable] = useState("");
+  const [repeatable, SetRepeatable] = useState("false");
   const [submitter, SetSubmitter] = useState("");
   const [version, SetVersion] = useState("");
+  const [site, SetSite] = useState("");
+  const [priority, SetPriority] = useState("");
+  const [soog, SetType] = useState("");
   const [isSubmitting, SetSubmit] = useState(false);
   const toast = useToast();
 
   function NewDBEntry(e: any) {
     e.preventDefault();
     const newBug = {
+      Type: soog,
       BugName: bugName,
       BugDescription: bugDescription,
+      Site: site,
+      Priority: priority,
       Version: version,
       IsRepeatable: repeatable,
       Submitter: submitter,
-      IsComplete: false,
     };
     SetSubmit(true);
     axios
       .post("https://kj-api.herokuapp.com/bugs/add", newBug)
+      //! .post("http://localhost:8080/bugs/add", newBug)
       .then((_) => console.log(":posted"))
       .then((_) =>
         toast({
@@ -66,8 +72,21 @@ const BugForm = () => {
       color="white"
       fontFamily="Arimo"
     >
-      <FormControl id="name" isRequired>
-        <FormLabel>Bug Name</FormLabel>
+      <FormControl id="type" mt={4} isRequired>
+        <FormLabel>Type</FormLabel>
+        <Select onChange={(event) => SetType(event.target.value)}>
+          <option style={{ color: "black" }}>Select Type</option>
+          <option style={{ color: "black" }} value="bug">
+            Bug
+          </option>
+          <option style={{ color: "black" }} value="task">
+            Task
+          </option>
+        </Select>
+      </FormControl>
+
+      <FormControl id="name" mt={4} isRequired>
+        <FormLabel>Name</FormLabel>
         <Input
           onChange={(event) => SetBugName(event.target.value)}
           type="name"
@@ -77,7 +96,7 @@ const BugForm = () => {
       {/* ///////// */}
 
       <FormControl id="description" mt={4}>
-        <FormLabel>bug description</FormLabel>
+        <FormLabel>Description</FormLabel>
         <Input
           onChange={(event) => SetBugDesc(event.target.value)}
           type="description"
@@ -96,13 +115,46 @@ const BugForm = () => {
           <option style={{ color: "black" }} value={0.2}>
             0.2
           </option>
+          <option style={{ color: "black" }} value={0.3}>
+            0.3
+          </option>
         </Select>
       </FormControl>
 
       {/* ///////// */}
+      <FormControl id="Site" isRequired mt={4}>
+        <FormLabel>Site</FormLabel>
+        <Select onChange={(event) => SetSite(event.target.value)}>
+          <option style={{ color: "black" }}>Select Name</option>
+          <option style={{ color: "black" }} value="Production">
+            Production
+          </option>
+          <option style={{ color: "black" }} value="Testing">
+            Testing
+          </option>
+        </Select>
+      </FormControl>
 
-      <FormControl id="Submitter" isRequired mt={4}>
-        <FormLabel>Name</FormLabel>
+      <FormControl id="priority" mt={4}>
+        <FormLabel>Priority</FormLabel>
+        <Select onChange={(event) => SetPriority(event.target.value)}>
+          <option style={{ color: "black" }} value={0}>
+            Select Priority
+          </option>
+          <option style={{ color: "black" }} value={1}>
+            !
+          </option>
+          <option style={{ color: "black" }} value={2}>
+            !!
+          </option>
+          <option style={{ color: "black" }} value={3}>
+            !!!
+          </option>
+        </Select>
+      </FormControl>
+
+      <FormControl id="Submitter" mt={4}>
+        <FormLabel>Submitter</FormLabel>
         <Select onChange={(event) => SetSubmitter(event.target.value)}>
           <option style={{ color: "black" }} value="">
             Select Name
@@ -118,25 +170,28 @@ const BugForm = () => {
           </option>
         </Select>
       </FormControl>
-      <FormControl as="fieldset" isRequired mt={4}>
-        <FormLabel as="legend">Is Repeatable?</FormLabel>
-        <RadioGroup>
-          <HStack spacing="24px">
-            <Radio
-              onChange={(event) => SetRepeatable(event.target.value)}
-              value="yes"
-            >
-              Yes
-            </Radio>
-            <Radio
-              onChange={(event) => SetRepeatable(event.target.value)}
-              value="no"
-            >
-              No
-            </Radio>
-          </HStack>
-        </RadioGroup>
-      </FormControl>
+
+      {soog === "bug" && (
+        <FormControl as="fieldset" mt={4} isRequired>
+          <FormLabel as="legend">Is Repeatable?</FormLabel>
+          <RadioGroup>
+            <HStack spacing="24px">
+              <Radio
+                onChange={(event) => SetRepeatable(event.target.value)}
+                value="true"
+              >
+                Yes
+              </Radio>
+              <Radio
+                onChange={(event) => SetRepeatable(event.target.value)}
+                value="false"
+              >
+                No
+              </Radio>
+            </HStack>
+          </RadioGroup>
+        </FormControl>
+      )}
 
       <Button
         isLoading={isSubmitting}

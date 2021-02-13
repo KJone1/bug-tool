@@ -2,16 +2,18 @@ import axios from "axios";
 import React from "react";
 
 const BASE_URL = "https://kj-api.herokuapp.com/bugs/";
-
+//! const BASE_URL = "http://localhost:8080/bugs/";
 export default function Http(
-  type: String,
-  completed?: Boolean,
-  version?: Number
+  type: string,
+  completed?: boolean,
+  versionNum?: number
 ) {
   const [responseData, setResponseData] = React.useState<any>([]);
   const [refresh, SetRefresh] = React.useState<number>(0);
 
   React.useEffect(() => {
+    const source = axios.CancelToken.source();
+
     let ref = setTimeout(function () {
       SetRefresh(refresh + 1);
       console.log(refresh);
@@ -20,10 +22,11 @@ export default function Http(
     switch (type.toLowerCase()) {
       case "status":
         axios
-          .get(`${BASE_URL}completed/${completed}`)
+          .get(`${BASE_URL}completed/${completed}`, {
+            cancelToken: source.token,
+          })
           .then((response) => {
             setResponseData(response.data);
-            console.log(response);
           })
 
           .catch((error) => {
@@ -32,10 +35,11 @@ export default function Http(
         break;
       case "version":
         axios
-          .get(`${BASE_URL}version/${version}`)
+          .get(`${BASE_URL}version/${versionNum}`, {
+            cancelToken: source.token,
+          })
           .then((response) => {
             setResponseData(response.data);
-            console.log(response);
           })
 
           .catch((error) => {
@@ -44,10 +48,9 @@ export default function Http(
         break;
       case "all":
         axios
-          .get(`${BASE_URL}`)
+          .get(`${BASE_URL}`, { cancelToken: source.token })
           .then((response) => {
             setResponseData(response.data);
-            console.log(response);
           })
 
           .catch((error) => {
@@ -61,8 +64,9 @@ export default function Http(
     }
 
     return () => {
+      source.cancel();
       clearTimeout(ref);
     };
-  }, [completed, refresh, type, version]);
+  }, [completed, refresh, type, versionNum]);
   return responseData;
 }

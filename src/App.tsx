@@ -1,20 +1,30 @@
 import React from "react";
-import { Flex, Heading, Stack } from "@chakra-ui/react";
+import { Flex, Heading, HStack, Stack } from "@chakra-ui/react";
 import BugList from "./components/Bug List/openBugList";
-
 import SortButton from "./components/buttons/sortButton";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoadingScreen from "./components/loadingScreen";
 import NewBugButton from "./components/buttons/addBugButton";
 import colors from "./styles/colors";
 import "./styles/fonts.css";
+import axios from "axios";
+import EmptyScreen from "./components/emptyScreen";
 
-function App() {
+export default function App() {
+  const [versionPath, setVersionPath] = React.useState<any>([]);
+  React.useEffect(() => {
+    //! axios.get("https://kj-api.herokuapp.com/bugs/filterByVerParams")
+    axios
+      .get("http://localhost:8080/bugs/filterByVerParams")
+      .then((response) => {
+        setVersionPath(response.data);
+        console.log("got params");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <Flex
       backgroundColor={colors.jet}
@@ -23,20 +33,21 @@ function App() {
       flexDirection="column"
       fontFamily="Arimo"
     >
-      <Heading
-        color={colors.yellow}
-        my={10}
-        fontFamily="Arimo"
-        letterSpacing="1px"
-      >
-        bug tool
-      </Heading>
-
       <Router>
-        <Stack direction="row">
-          <NewBugButton />
-          <SortButton />
-        </Stack>
+        <HStack mb={5} mt={10} spacing="50px">
+          <Heading
+            color={colors.yellow}
+            fontFamily="Arimo"
+            letterSpacing="1px"
+            alignSelf="baseline"
+          >
+            Lite BT
+          </Heading>
+          <Stack direction="row">
+            <NewBugButton />
+            <SortButton />
+          </Stack>
+        </HStack>
 
         <Switch>
           <Route exact path={`/`}>
@@ -48,31 +59,22 @@ function App() {
           <Route exact path={`/bugs/status/closed`}>
             <BugList type="status" IsCompleted />
           </Route>
-          <Route exact path={`/bugs/version/0.1`}>
-            <BugList type="version" VerNum={0.1} />
+          {/* <Route path={`/bugs/version/0.1`}>
+            <BugList type="version" versionNum={0.1} />
           </Route>
 
-          <Route exact path={`/bugs/version/0.2`}>
-            <BugList type="version" VerNum={0.2} />
-          </Route>
-
+         */}
+          {versionPath.map((pathID: number) => (
+            <Route key={`${pathID}`} path={`/bugs/version/${pathID}`}>
+              <BugList type="version" versionNum={pathID} />
+            </Route>
+          ))}
           <Route exact path="/error" component={LoadingScreen} />
           <Route>
-            <Redirect to="/error" />
+            <EmptyScreen />
           </Route>
         </Switch>
       </Router>
     </Flex>
   );
 }
-
-export default App;
-
-// background-color: ;
-// min-height: 100vh;
-// display: flex;
-// flex-direction: column;
-// align-items: center;
-// justify-content: center;
-// font-size: calc(10px + 2vmin);
-// color: white;

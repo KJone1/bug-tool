@@ -10,8 +10,37 @@ import {
 } from "@chakra-ui/react";
 import { BiChevronDown } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 function SortButton() {
+  const [availableVersion, setAvailableVersion] = React.useState<any>([]);
+
+  //desc: update Menu only first time website loads
+  React.useEffect(() => {
+    //! axios.get("https://kj-api.herokuapp.com/bugs/filterByVerParams")
+    axios
+      .get("http://localhost:8080/bugs/filterByVerParams")
+      .then((response) => {
+        setAvailableVersion(response.data);
+        console.log("got params");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  //desc: update Menu every time model is opened \ add onOpen={getVersionParams} as Menu param
+  // function getVersionParams() {
+  //   axios
+  //     .get("http://localhost:8080/bugs/filterByVerParams")
+  //     .then((response) => {
+  //       setAvailableVersion(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
   return (
     <Menu isLazy>
       <MenuButton
@@ -35,12 +64,11 @@ function SortButton() {
         </MenuGroup>
         <MenuDivider />
         <MenuGroup title="Version">
-          <NavLink to="/bugs/version/0.1">
-            <MenuItem value={0.1}>0.1</MenuItem>
-          </NavLink>
-          <NavLink to="/bugs/version/0.2">
-            <MenuItem value={0.2}>0.2</MenuItem>
-          </NavLink>
+          {availableVersion.map((obj: number, index: number) => (
+            <NavLink key={index} to={`/bugs/version/${obj}`}>
+              <MenuItem value={`${obj}`}>{`${obj}`}</MenuItem>
+            </NavLink>
+          ))}
         </MenuGroup>
       </MenuList>
     </Menu>

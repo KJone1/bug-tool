@@ -22,8 +22,10 @@ code {
 
 }
 
+
 ::-webkit-scrollbar-track {
-  background: #282c34;
+  background: #30323D;
+
 }
 
 /* Handle */

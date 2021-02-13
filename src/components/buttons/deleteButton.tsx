@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, useToast } from "@chakra-ui/react";
+import { useToast, Button } from "@chakra-ui/react";
 import { FiTrash2 } from "react-icons/fi";
 
 import axios from "axios";
@@ -12,6 +12,7 @@ function DeleteButton(props: any) {
     SetDelete(true);
     axios
       .delete(`https://kj-api.herokuapp.com/bugs/${id}`)
+      //! .delete(`http://localhost:8080/bugs/${id}`)
       .then(() => console.log(":deleted"))
       .then(() =>
         toast({
@@ -36,16 +37,16 @@ function DeleteButton(props: any) {
   }
 
   return (
-    <IconButton
+    <Button
       alignSelf="center"
       variant="ghost"
       colorScheme="red"
       aria-label="delete Button"
       isLoading={isDeleting}
-      fontSize="130%"
-      icon={<FiTrash2 />}
       onClick={() => DeleteDBEntry(props.id)}
-    />
+    >
+      Delete <FiTrash2 />
+    </Button>
   );
 }
 

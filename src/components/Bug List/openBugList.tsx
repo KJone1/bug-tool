@@ -2,147 +2,134 @@ import {
   Badge,
   Flex,
   SimpleGrid,
-  Stack,
   Text,
   Tag,
   TagLabel,
+  HStack,
+  VStack,
   Icon,
 } from "@chakra-ui/react";
 import http from "../../axios";
 import LoadingScreen from "../loadingScreen";
-import CompleteButton from "../buttons/completeButton";
 import day from "dayjs";
-import { extendTheme } from "@chakra-ui/react";
-import { createBreakpoints } from "@chakra-ui/theme-tools";
-import DeleteButton from "../buttons/deleteButton";
 import colors from "../../styles/colors";
 import { FiRepeat } from "react-icons/fi";
+import { AiFillBug } from "react-icons/ai";
+import { BiTask } from "react-icons/bi";
+import {
+  FcLowPriority,
+  FcMediumPriority,
+  FcHighPriority,
+} from "react-icons/fc";
+import Expend from "../acco";
 
 interface PropType {
   type: string;
-  IsCompleted?: Boolean;
-  VerNum?: Number;
+  IsCompleted?: boolean;
+  versionNum?: number;
 }
-const breakpoints = createBreakpoints({
-  sm: "320px",
-  md: "768px",
-  lg: "960px",
-  xl: "1200px",
-});
-// 3. Extend the theme
-const theme = extendTheme({ breakpoints });
 
-function BugList(props: PropType) {
-  const httpCall = http(props.type, props.IsCompleted, props.VerNum);
+const PriorityIconMap: any = {
+  "1": FcLowPriority,
+  "2": FcMediumPriority,
+  "3": FcHighPriority,
+};
+
+const TypeIconMap: any = [AiFillBug, BiTask];
+
+function BugList(data: PropType) {
+  const httpCall = http(data.type, data.IsCompleted, data.versionNum);
 
   if (httpCall.length !== 0) {
     return (
       <>
+        <Text color={colors.white}>{` count : ${httpCall.length}`}</Text>
         <SimpleGrid
-          columns={1}
+          columns={{ base: 1, md: 2, lg: 3 }}
           spacingY="10px"
+          spacingX="5px"
           overflowY="scroll"
-          mb={"9vh"}
-          mt={4}
-          w={{ base: "95%", md: "70%", lg: "50%" }}
+          pb={4}
+          pt={2}
+          w={{ base: "95%", md: "90%" }}
           justifyContent="center"
         >
           {httpCall.map((array: any, index: number) => (
             <Flex
               key={index}
-              maxW="99%"
-              h="100%"
+              maxW="100%"
+              maxH="100%"
               color="black"
               backgroundColor={colors.white}
               borderRadius="5px"
-              px={4}
-              py={2}
+              px="12px"
+              py="4px"
+              mr="2px"
               justifyContent="space-between"
-              alignItems="flex-end"
+              alignItems="center"
             >
               <Flex flexDirection="column">
-                <Stack direction="row">
-                  {array.IsComplete ? (
-                    <Text
-                      fontSize={{ base: "2.4vh", md: "2.5vh", lg: "3vh" }}
-                      fontWeight="700"
-                      as="del"
-                    >
-                      {`${array.BugName}`}
-                    </Text>
-                  ) : (
-                    <Text
-                      fontSize={{ base: "2.4vh", md: "2.5vh", lg: "3vh" }}
-                      fontWeight="700"
-                    >
-                      {`${array.BugName}`}
-                    </Text>
-                  )}
+                <Text
+                  fontSize={"20px"}
+                  fontWeight="700"
+                  as={array.IsComplete && "del"}
+                >
+                  {`${array.BugName}`}
+                </Text>
+
+                <Text
+                  color="gray.400"
+                  fontSize="15px"
+                  fontWeight="500"
+                  alignSelf="flex-start"
+                >
+                  {`Submitted by: ${
+                    array.Submitter ? array.Submitter : "User"
+                  } on ${day(array.createdAt).format("DD/MM/YYYY")}`}
+                </Text>
+
+                <HStack spacing="8px" mt={1}>
+                  <Icon
+                    as={array.Type === "bug" ? TypeIconMap[0] : TypeIconMap[1]}
+                    alignSelf="center"
+                    px={1}
+                    transform="scale(2.4)"
+                  ></Icon>
 
                   <Tag
                     size="sm"
                     variant="outline"
                     colorScheme="blue"
                     borderRadius="30px"
-                    px={4}
-                    h="100%"
+                    px={3}
                     alignSelf="center"
                   >
                     <TagLabel> {`v${array.Version}`}</TagLabel>
                   </Tag>
-                </Stack>
+                  {array.IsRepeatable && (
+                    <Badge
+                      alignSelf="center"
+                      p={1}
+                      borderRadius="5px"
+                      colorScheme="red"
+                    >
+                      <FiRepeat />
+                    </Badge>
+                  )}
 
-                <Text
-                  color={colors.coralBlack}
-                  fontSize="2.0vh"
-                  fontWeight="500"
-                >
-                  {`${
-                    array.BugDescription ? `${array.BugDescription}` : "None"
-                  }`}
-                </Text>
-
-                <Flex flexDirection="row" alignSelf="flex-start">
-                  <Text
-                    color="gray.400"
-                    fontSize="2.0vh"
-                    fontWeight="500"
-                    alignSelf="center"
-                  >
-                    {`Submitted by: ${array.Submitter} on ${day(
-                      array.createdAt
-                    ).format("DD/MM/YYYY")}`}
-                  </Text>
-                  <Badge
-                    alignSelf="center"
-                    h="100%"
-                    p={1}
-                    ml="4px"
-                    borderRadius="5px"
-                    colorScheme={`${array.IsRepeatable ? "red" : null}`}
-                  >
-                    {array.IsRepeatable ? <FiRepeat /> : null}
-                  </Badge>
-                </Flex>
+                  {array.Priority && (
+                    <Icon
+                      as={PriorityIconMap[array.Priority]}
+                      alignSelf="center"
+                      px={1}
+                      transform="scale(2.4)"
+                    ></Icon>
+                  )}
+                </HStack>
               </Flex>
-
-              {array.IsComplete ? (
-                <Flex flexDir="column" alignSelf="center">
-                  <DeleteButton id={array._id} />
-                </Flex>
-              ) : (
-                <Stack flexDir="row" spacing={"0.8vh"} alignSelf="center">
-                  <DeleteButton id={array._id} />
-                  <CompleteButton
-                    id={array._id}
-                    BugName={array.BugName}
-                    BugDescription={array.BugDescription}
-                    Version={array.Version}
-                    IsRepeatable={array.IsRepeatable}
-                    Submitter={array.Submitter}
-                  />
-                </Stack>
-              )}
+              <VStack display="flex" justifyContent="space-between">
+                <Expend {...array} />
+              </VStack>
             </Flex>
           ))}
         </SimpleGrid>
